@@ -69,12 +69,11 @@ function Board({ xIsNext, squares, onPlay }) {
 
     return board;
   }
-  let board = []
-  board = renderBoard()
+
   return (
     <>
       <div className="status">{status}</div>
-      {board}
+      {renderBoard()}
     </>
   );
 }
@@ -99,15 +98,13 @@ export default function Game() {
     let description;
     const findLocation = (curMove) => {
       if (curMove === 0)
-        return {
-          col: 0,
-          row: 0
-        }
+        return null;
       const prevSquares = history[curMove - 1];
+      const curSquare = history[curMove];
       let col = 0;
       let row = 0;
-      for (let i = 0; i < 9; i++) {
-        if (prevSquares[i] !== currentSquares[i]) {
+      for (let i = 0; i < curSquare.length; i++) {
+        if (prevSquares[i] !== curSquare[i]) {
           col = i % 3;
           row = Math.floor(i / 3);
           return {
@@ -116,14 +113,11 @@ export default function Game() {
           }
         }
       }
-      return {
-        col: col,
-        row: row
-      }
+      return null
     }
     const location = findLocation(move)
-    const row = location.row
-    const col = location.col
+    const row = location ? location.row:0
+    const col = location ? location.col:0
     if (move > 0) {
       description = 'Go to move #' + move + ` (${row},${col})`;
     } else {
